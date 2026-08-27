@@ -9,7 +9,7 @@ app.use(Express.json())
 dns.setServers(["1.1.1.1","8.8.8.8"])
 dotenv.config()
 
-//app.use("/students", )
+//app.use("/api/", )
 
 async function connectDB() {
     try {
