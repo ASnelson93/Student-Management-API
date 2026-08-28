@@ -1,6 +1,8 @@
 const Student = require("../models/studentModel")
 
-
+//@desc create new student
+//@
+//
 const newStudent = async (req, res) => {
     try {
         const { name, email, phone, age, course, city } = req.body
@@ -35,9 +37,7 @@ const newStudent = async (req, res) => {
         })
     }
     catch (error) {
-        return res.status(500).send({
-            message: "Server error"
-        })
+        next()
     }
 }
 
@@ -47,17 +47,51 @@ const getStudent = async (req, res) => {
 
         return res.status(200).send(studentList)
     } catch (error) {
-        return res.status(500).send({
-            message: "server error"
-        })
+        next()
     }
 }
 
-const updateStudent = async (req, res) => {
+const updateStudent = async (req, res, next) => {
+    try{
+        const {id} = req.params
 
+        const student = await Student.findByIdAndUpdate(id, req.body)
+
+        if(!student){
+            return res.status(400).send({
+                message : "Student is not found"
+            })
+        }
+
+        return res.status(200).send({
+            message : "Student has been updated"
+        })
+
+    }catch(error){
+        
+        next()
+    }
 }
 
-const deleteStudent = () => { }
+const deleteStudent = async (req,res) => {
+    try{
+        const {id} = req.params
+
+        const student = await Student.findByIdAndDelete(id)
+
+        if(!student){
+            return res.status(400).send({
+                message: "Student not found"
+            })
+        }
+
+        return res.status(200).send({
+            message : "Student deleted succesfully"
+        })
+    }catch(error){
+        next()
+    }
+}
 
 const searchStudent = () => { }
 
@@ -67,5 +101,7 @@ const sortByAge = () => { }
 
 module.exports = {
     newStudent,
-    getStudent
+    getStudent,
+    updateStudent,
+    deleteStudent
 }
