@@ -25,7 +25,8 @@ const studentSchema = new mongoose.Schema({
     },
     city : {
         type : String,
-        default : "Atlanta"
+        default : "Atlanta",
+        required : true
     },
     createdAt : {
         type : Date,
