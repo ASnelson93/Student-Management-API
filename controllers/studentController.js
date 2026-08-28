@@ -1,51 +1,71 @@
 const Student = require("../models/studentModel")
 
 
-const newStudent = async (req,res) => {
-    const {name,email,phone,age,course,city} = req.body
+const newStudent = async (req, res) => {
+    try {
+        const { name, email, phone, age, course, city } = req.body
 
-    if(!name || !email || !phone || !age || !course || !city){
-        return res.status(400).send({
-            message: "Invalid Input"
+        if (!name || !email || !phone || !age || !course || !city) {
+            return res.status(400).send({
+                message: "Invalid Input"
+            })
+        }
+
+        const existingStudent = await Student.findOne({ email: email })
+
+        if (existingStudent) {
+            return res.status(400).send({
+                message: "Student already exist"
+            })
+        }
+
+        const student = await Student({
+            name: name,
+            email: email,
+            phone: phone,
+            age: age,
+            course: course,
+            city: city
+        })
+
+        await student.save()
+
+        return res.status(200).send({
+            message: "Student created successfully."
         })
     }
-
-    const existingStudent = await Student.findOne({email : email})
-
-    if(existingStudent){
-        return res.status(400).send({
-            message : "Student already exist"
+    catch (error) {
+        return res.status(500).send({
+            message: "Server error"
         })
     }
-
-    const student = await Student({
-        name : name,
-        email : email,
-        phone : phone,
-        age : age,
-        course : course,
-        city : city
-    })
-
-    await student.save()
-
-    return res.status(200).send({
-        message : "Student created successfully."
-    })
 }
 
-const getStudent = () => {}
+const getStudent = async (req, res) => {
+    try {
+        const studentList = await Student.find()
 
-const updateStudent = () => {}
+        return res.status(200).send(studentList)
+    } catch (error) {
+        return res.status(500).send({
+            message: "server error"
+        })
+    }
+}
 
-const deleteStudent = ()=> {}
+const updateStudent = async (req, res) => {
 
-const searchStudent = () => {}
+}
 
-const filterCourse = () => {}
+const deleteStudent = () => { }
 
-const sortByAge = () => {}
+const searchStudent = () => { }
+
+const filterCourse = () => { }
+
+const sortByAge = () => { }
 
 module.exports = {
-    newStudent
+    newStudent,
+    getStudent
 }

@@ -1,10 +1,10 @@
 const express = require("express")
-const { newStudent } = require("../controllers/studentController")
+const { newStudent, getStudent } = require("../controllers/studentController")
 
 const studentRoute = express.Router()
 
 studentRoute.post("/students", newStudent)
-// studentRoute.get("/students", getStudent)
+studentRoute.get("/students", getStudent)
 // studentRoute.get("/students/:id", getStudentById)
 // studentRoute.put("/students/:id", updateStudent)
 // studentRoute.delete("/students/:id", deleteStudent)
