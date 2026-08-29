@@ -5,6 +5,30 @@ const Student = require("../models/studentModel")
 //
 const newStudent = async (req, res) => {
     try {
+        const { search, course, sort } = req.query
+
+        let queryObj = {}
+
+        if (search) {
+            queryObj.name = { $regex: search, $options: 'i' }
+        }
+
+        if (course) {
+            queryObj.course = { $regex: new RegExp(`^${course}$`, 'i') }
+        }
+
+        let query = Student.find(queryObj)
+
+        if (sort) {
+            if (sort==='age') {
+                query = query.sort({age: 1})
+            } else if (sort==='-age'){
+                query = query.sort({age : -1})
+            } else {
+                query = query.sort(sort)
+            }
+        }
+
         const { name, email, phone, age, course, city } = req.body
 
         if (!name || !email || !phone || !age || !course || !city) {
@@ -53,7 +77,7 @@ const getStudent = async (req, res) => {
 
 const getStudentById = async (req, res) => {
     try {
-        const {id} = req.params
+        const { id } = req.params
 
         const studentList = await Student.findById(id)
 
@@ -64,52 +88,47 @@ const getStudentById = async (req, res) => {
 }
 
 const updateStudent = async (req, res, next) => {
-    try{
-        const {id} = req.params
+    try {
+        const { id } = req.params
 
         const student = await Student.findByIdAndUpdate(id, req.body)
 
-        if(!student){
+        if (!student) {
             return res.status(400).send({
-                message : "Student is not found"
+                message: "Student is not found"
             })
         }
 
         return res.status(200).send({
-            message : "Student has been updated"
+            message: "Student has been updated"
         })
 
-    }catch(error){
-        
+    } catch (error) {
+
         next()
     }
 }
 
-const deleteStudent = async (req,res) => {
-    try{
-        const {id} = req.params
+const deleteStudent = async (req, res) => {
+    try {
+        const { id } = req.params
 
         const student = await Student.findByIdAndDelete(id)
 
-        if(!student){
+        if (!student) {
             return res.status(400).send({
                 message: "Student not found"
             })
         }
 
         return res.status(200).send({
-            message : "Student deleted succesfully"
+            message: "Student deleted succesfully"
         })
-    }catch(error){
+    } catch (error) {
         next()
     }
 }
 
-const searchStudent = (req, res) => { }
-
-const filterCourse = (req, res) => { }
-
-const sortByAge = (req, res) => { }
 
 module.exports = {
     newStudent,

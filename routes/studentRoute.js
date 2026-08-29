@@ -8,9 +8,6 @@ studentRoute.get("/students", getStudent)
 studentRoute.get("/students/:id", getStudentById)
 studentRoute.put("/students/:id", updateStudent)
 studentRoute.delete("/students/:id", deleteStudent)
-// studentRoute.get(`/students?`, searchStudent)
-// studentRoute.get(`/students?`, course)
-// studentRoute.get(`/students?`, ageSort)
-// studentRoute.get(`/students?`, ageDesc)
+
 
 module.exports = studentRoute
