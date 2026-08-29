@@ -4,29 +4,36 @@ const { isPrimary } = require("node:cluster")
 const studentSchema = new mongoose.Schema({
     name : {
         type: String,
-        require : true
+        require : true,
+        trim : true
     },
     email : {
         type : String,
         require : true,
-        unique : true
+        unique : true,
+        trim : true,
+        lowercase : true
     },
     phone : {
         type : String,
-        require: true
+        require: true,
+        trim : true
     },
     age : {
         type : Number,
-        require:true
+        require:true,
+        min : 16
     },
     course : {
         type : String,
-        require : true
+        require : true,
+        trim : true
     },
     city : {
         type : String,
         default : "Atlanta",
-        required : true
+        required : true,
+        trim : true
     },
     createdAt : {
         type : Date,

@@ -51,6 +51,18 @@ const getStudent = async (req, res) => {
     }
 }
 
+const getStudentById = async (req, res) => {
+    try {
+        const {id} = req.params
+
+        const studentList = await Student.findById(id)
+
+        return res.status(200).send(studentList)
+    } catch (error) {
+        next()
+    }
+}
+
 const updateStudent = async (req, res, next) => {
     try{
         const {id} = req.params
@@ -93,15 +105,16 @@ const deleteStudent = async (req,res) => {
     }
 }
 
-const searchStudent = () => { }
+const searchStudent = (req, res) => { }
 
-const filterCourse = () => { }
+const filterCourse = (req, res) => { }
 
-const sortByAge = () => { }
+const sortByAge = (req, res) => { }
 
 module.exports = {
     newStudent,
     getStudent,
     updateStudent,
-    deleteStudent
+    deleteStudent,
+    getStudentById
 }
